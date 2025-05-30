@@ -7,8 +7,21 @@
 # BlueJ files
 *.ctxt
 
+# Gradle
+.gradle
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+.DS_Store
+
+# Ballerina
+target/
+bin/
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+.idea
 
 # Package Files #
 *.jar
