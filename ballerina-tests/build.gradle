@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import org.apache.tools.ant.taskdefs.condition.Os
-
 description = 'Ballerina - Metric Logs - Ballerina Tests'
 
 configurations {
