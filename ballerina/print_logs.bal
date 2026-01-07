@@ -16,6 +16,8 @@
 
 import ballerina/log;
 
+string[] DEFAULT_LOG_TAG_KEYS = ["logger", "spanId", "traceId", "icp.runtimeId"];
+
 function init() returns error? {
     if logFilePath != "" {
         var result = check log:setOutputFile(logFilePath);
@@ -28,6 +30,9 @@ public function printMetricsLog(map<string> tags) {
     
     
     foreach string tagKey in tags.keys() {
+        if DEFAULT_LOG_TAG_KEYS.some(key => key == tagKey) {
+            continue;
+        }
         logAttributes[tagKey] = tags[tagKey];
     }
     if logLevel == "DEBUG" {
