@@ -52,13 +52,13 @@ task copyExternalJarsToLib(type: Copy) {
 
 def packageOrg = "ballerinax"
 def packageName = "metrics.logs"
-def ballerinaConfigFile = new File("${project.projectDir}/Ballerina.toml")
+def ballerinaTomlFile = new File("${project.projectDir}/Ballerina.toml")
+def ballerinaTomlFilePlaceHolder = new File("${project.rootDir}/build-config/resources/Ballerina.toml")
 def artifactBallerinaDocs = file("${project.projectDir}/build/docs_parent/")
 def artifactCacheParent = file("${project.buildDir}/cache_parent/")
 def artifactLibParent = file("${project.buildDir}/lib_parent/")
 def tomlVersion = stripBallerinaExtensionVersion("${project.version}")
 def ballerinaCentralAccessToken = System.getenv('BALLERINA_CENTRAL_ACCESS_TOKEN')
-def originalConfig = ballerinaConfigFile.text
 def artifactJar = file("$project.projectDir/target/cache/${packageOrg}/${packageName}/${tomlVersion}/java21/")
 def platform = "java21"
 def skipTests = false
@@ -79,15 +79,9 @@ def stripBallerinaExtensionVersion(String extVersion) {
 
 task updateTomlVersions {
     doLast {
-        def newConfig = ballerinaConfigFile.text.replace("@project.version@", project.version)
+        def newConfig = ballerinaTomlFilePlaceHolder.text
         newConfig = newConfig.replace("@toml.version@", tomlVersion)
-        ballerinaConfigFile.text = newConfig
-    }
-}
-
-task revertTomlFile {
-    doLast {
-        ballerinaConfigFile.text = originalConfig
+        ballerinaTomlFile.text = newConfig
     }
 }
 
@@ -107,9 +101,6 @@ task ballerinaBuild {
     dependsOn ":metrics.logs-ballerina:generatePomFileForMavenJavaPublication"
 
     inputs.dir file(project.projectDir)
-    if (skipTests) {
-        finalizedBy(revertTomlFile)
-    }
 
     doLast {
         def additionalBuildParams = ""
@@ -177,8 +168,6 @@ task ballerinaPublish {
     dependsOn ballerinaBuild
     dependsOn ":metrics.logs-ballerina:generatePomFileForMavenJavaPublication"
 
-    finalizedBy(revertTomlFile)
-
     doLast {
         if (project.version.toString().split("-").length > 1) {
             return
@@ -232,8 +221,6 @@ task extractBallerinaClassFiles(type: Copy) {
 
 task publishBalaFileToLocal {
     dependsOn ballerinaBuild
-
-    finalizedBy(revertTomlFile)
 
     doLast {
         if (!skipTests) {

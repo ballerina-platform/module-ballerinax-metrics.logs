@@ -16,34 +16,50 @@
 
 import ballerina/log;
 
-string[] DEFAULT_LOG_TAG_KEYS = ["logger", "spanId", "traceId", "icp.runtimeId"];
+string[] DEFAULT_LOG_TAG_KEYS = ["logger", "spanId", "traceId", "icp.runtimeId", "error"];
+
+log:Logger logger;
 
 function init() returns error? {
+    log:Config metricsLogConfig = {
+        level: logLevel,
+        format: logFormat
+    };
+
     if logFilePath != "" {
-        var result = check log:setOutputFile(logFilePath);
+        log:FileOutputDestination destination = {
+            path: logFilePath
+        };
+        if enableLogRotation {
+            destination.rotation = rotation;
+        } 
+
+        log:OutputDestination[] destinations = [];
+        destinations.push(destination);
+        metricsLogConfig.destinations = destinations.cloneReadOnly();
     }
+
+    logger = check log:fromConfig(metricsLogConfig);
 }
 
 public function printMetricsLog(map<string> tags) {
     log:KeyValues logAttributes = {};
     logAttributes["logger"] = "metrics";
     
-    
     foreach string tagKey in tags.keys() {
-        if DEFAULT_LOG_TAG_KEYS.some(key => key == tagKey) {
-            continue;
+        if !DEFAULT_LOG_TAG_KEYS.some(key => key == tagKey) && !logAttributes.hasKey(tagKey) {
+            logAttributes[tagKey] = tags[tagKey];
         }
-        logAttributes[tagKey] = tags[tagKey];
     }
     if logLevel == "DEBUG" {
-        log:printDebug("", keyValues = logAttributes);
+        logger.printDebug("", keyValues = logAttributes);
     } else if logLevel == "INFO" {
-        log:printInfo("", keyValues = logAttributes);
+        logger.printInfo("", keyValues = logAttributes);
     } else if logLevel == "WARN" {
-        log:printWarn("", keyValues = logAttributes);
+        logger.printWarn("", keyValues = logAttributes);
     } else if logLevel == "ERROR" {
-        log:printError("", keyValues = logAttributes);
+        logger.printError("", keyValues = logAttributes);
     } else {
-        log:printInfo("", keyValues = logAttributes);
+        logger.printInfo("", keyValues = logAttributes);
     }
 }
