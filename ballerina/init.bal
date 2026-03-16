@@ -25,5 +25,5 @@ configurable log:RotationConfig rotation = {
     policy: log:BOTH,
     maxFileSize: 10485760, // 10MB in bytes
     maxAge: 86400, // 24 hours in seconds
-    maxBackupFiles: 10
+    maxBackupFiles: 7
 };

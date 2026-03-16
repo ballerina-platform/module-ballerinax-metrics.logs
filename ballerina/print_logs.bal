@@ -51,13 +51,13 @@ public function printMetricsLog(map<string> tags) {
             logAttributes[tagKey] = tags[tagKey];
         }
     }
-    if logLevel == "DEBUG" {
+    if logLevel == log:DEBUG {
         logger.printDebug("", keyValues = logAttributes);
-    } else if logLevel == "INFO" {
+    } else if logLevel == log:INFO {
         logger.printInfo("", keyValues = logAttributes);
-    } else if logLevel == "WARN" {
+    } else if logLevel == log:WARN {
         logger.printWarn("", keyValues = logAttributes);
-    } else if logLevel == "ERROR" {
+    } else if logLevel == log:ERROR {
         logger.printError("", keyValues = logAttributes);
     } else {
         logger.printInfo("", keyValues = logAttributes);
