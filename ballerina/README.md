@@ -1,6 +1,12 @@
-## Package Overview
+## Overview
 
-The Metrics Logs Observability Extension is used to enable Ballerina metrics logs to be observed by OpenSearch.
+The Metrics Logs Observability Extension enables metrics logs to be observed by OpenSearch.
+
+### Key Features
+
+- Publish metrics logs to OpenSearch for observability
+- Simple configuration via import and Config.toml
+- Lightweight extension for metrics log collection
 
 ## Enabling Metrics Logs Extension
 
