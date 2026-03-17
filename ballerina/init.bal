@@ -13,7 +13,17 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+import ballerina/log;
 
-configurable string logLevel = "INFO";
-configurable string logFormat = "json";
+configurable log:Level logLevel = log:INFO;
+configurable log:LogFormat logFormat = log:LOGFMT;
 configurable string logFilePath = "";
+
+// Log rotation configuration (applies only when logFilePath is set)
+configurable boolean enableLogRotation = false;
+configurable log:RotationConfig rotation = {
+    policy: log:BOTH,
+    maxFileSize: 10485760, // 10MB in bytes
+    maxAge: 86400, // 24 hours in seconds
+    maxBackupFiles: 7
+};

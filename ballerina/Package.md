@@ -26,3 +26,19 @@ To enable the extension and publish metrics logs to OpenSearch, add the followin
 [ballerina.observe]
 metricsLogsEnabled=true
 ```
+
+You can configure log file location, log format and log rotation in the `Config.toml`.
+
+```toml
+[ballerinax.metrics.logs]
+logFilePath = "<PATH_TO_LOG_FILE>"      # Optional configuration
+logLevel = "INFO"                       # Optional configuration. Possible values: "DEBUG", "INFO", "WARN", "ERROR"
+logFormat = "logfmt"                    # Optional configuration. Possible values: "logfmt", "json"
+enableLogRotation = false               # Optional configuration. Possible values: true, false
+
+[ballerinax.metrics.logs.rotation]      # Optional configuration. Applies only when logFilePath is set
+policy = "BOTH"                         # SIZE_BASED, TIME_BASED, or BOTH
+maxFileSize = 10485760                  # 10MB in bytes
+maxAge = 86400                          # 24 hours in seconds
+maxBackupFiles = 7                      # Keep 7 backup files
+```
