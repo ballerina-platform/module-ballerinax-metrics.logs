@@ -40,11 +40,10 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
-          scan-ref: "${{ github.workspace }}/ballerina/lib"
+          scan-ref: '.'
           format: 'table'
-          timeout: '6m0s'
+          timeout: '10m0s'
           exit-code: '1'
-
       - name: Ballerina Central Push
         if: ${{ github.event.inputs.environment == 'CENTRAL' }}
         env:
