@@ -17,8 +17,11 @@
 [package]
 org = "ballerinax"
 name = "metrics.logs"
-version = "1.1.0"
-distribution = "2201.13.0"
+version = "1.2.0"
+distribution = "2201.14.0"
 
 [build-options]
 observabilityIncluded = true
+# Pin dependency resolution to the versions in Dependencies.toml so builds do not
+# drift when newer packages are published to Central.
+sticky = true

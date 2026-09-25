@@ -18,7 +18,10 @@
 org = "ballerinax"
 name = "metrics.logs"
 version = "@toml.version@"
-distribution = "2201.13.0"
+distribution = "2201.14.0"
 
 [build-options]
 observabilityIncluded = true
+# Pin dependency resolution to the versions in Dependencies.toml so builds do not
+# drift when newer packages are published to Central.
+sticky = true
