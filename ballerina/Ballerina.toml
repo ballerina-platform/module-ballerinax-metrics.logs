@@ -17,14 +17,8 @@
 [package]
 org = "ballerinax"
 name = "metrics.logs"
-<<<<<<< HEAD
-version = "1.0.1"
-distribution = "2201.12.0"
-=======
 version = "1.1.0"
 distribution = "2201.13.0"
->>>>>>> b2be5e5ffcbc53a3b43e18b59b54afb17beea161
-
 [build-options]
 observabilityIncluded = true
 

@@ -5,11 +5,7 @@
 
 [ballerina]
 dependencies-toml-version = "2"
-<<<<<<< HEAD
 distribution-version = "2201.13.1"
-=======
-distribution-version = "2201.13.0"
->>>>>>> b2be5e5ffcbc53a3b43e18b59b54afb17beea161
 
 [[package]]
 org = "ballerina"
@@ -54,11 +50,7 @@ modules = [
 [[package]]
 org = "ballerina"
 name = "observe"
-<<<<<<< HEAD
-version = "1.6.0"
-=======
 version = "1.7.1"
->>>>>>> b2be5e5ffcbc53a3b43e18b59b54afb17beea161
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
@@ -78,11 +70,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "metrics.logs"
-<<<<<<< HEAD
-version = "1.0.1"
-=======
 version = "1.1.0"
->>>>>>> b2be5e5ffcbc53a3b43e18b59b54afb17beea161
 dependencies = [
 	{org = "ballerina", name = "log"},
 	{org = "ballerinai", name = "observe"}
