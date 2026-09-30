@@ -17,15 +17,22 @@
  */
 
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.process.ExecOperations
 
 plugins {
     id 'checkstyle'
     id "com.github.spotbugs" version "${githubSpotbugsVersion}"
-    id "com.github.johnrengelman.shadow" version "${githubJohnrengelmanShadowVersion}"
+    id "com.gradleup.shadow" version "${githubJohnrengelmanShadowVersion}"
     id "de.undercouch.download" version "${underCouchDownloadVersion}"
     id "net.researchgate.release" version "${researchgateReleaseVersion}"
     id "jacoco"
 }
+
+abstract class ExecHelper {
+    @Inject
+    abstract ExecOperations getExecOperations()
+}
+project.ext.execHelper = project.objects.newInstance(ExecHelper)
 
 allprojects {
     group = project.group
@@ -120,7 +127,7 @@ def moduleVersion = project.version.replace("-SNAPSHOT", "")
 
 def executeBalCommand(String command, String dir, env = "") {
     try {
-        exec {
+        project.ext.execHelper.execOperations.exec {
             workingDir dir
             environment environment: env
             if (Os.isFamily(Os.FAMILY_WINDOWS)) {
@@ -149,8 +156,18 @@ release {
     }
 }
 
-task build {
-    dependsOn('metrics.logs-ballerina:build')
+if (tasks.names.contains('build')) {
+    tasks.named('build') {
+        dependsOn('metrics.logs-ballerina:build')
+    }
+} else {
+    task build {
+        dependsOn('metrics.logs-ballerina:build')
+    }
+}
+
+jacoco {
+    toolVersion = jacocoVersion
 }
 
 task codeCoverageReport(type: JacocoReport) {
@@ -166,8 +183,8 @@ task codeCoverageReport(type: JacocoReport) {
     reports {
         xml.required = true
         html.required = true
-        xml.destination = new File("${buildDir}/reports/jacoco/report.xml")
-        html.destination = new File("${buildDir}/reports/jacoco/report.html")
+        xml.outputLocation = file("${buildDir}/reports/jacoco/report.xml")
+        html.outputLocation = file("${buildDir}/reports/jacoco/report.html")
     }
 
     onlyIf = {
