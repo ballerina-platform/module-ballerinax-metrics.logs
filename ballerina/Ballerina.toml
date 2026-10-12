@@ -17,7 +17,7 @@
 [package]
 org = "ballerinax"
 name = "metrics.logs"
-version = "1.2.0"
+version = "1.2.1"
 distribution = "2201.14.0"
 
 [build-options]
